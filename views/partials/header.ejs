@@ -1,0 +1,21 @@
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a href="/" class="logo">KM-<span>Achat</span></a>
+    <nav class="nav">
+      <a href="/catalogue">Catalogue</a>
+      <% if (currentUser) { %>
+        <a href="/commander">Nouvelle demande</a>
+        <a href="/mon-compte/commandes">Mes commandes</a>
+        <% if (currentUser.role === 'admin') { %>
+          <a href="/admin">Admin</a>
+        <% } %>
+        <form action="/logout" method="POST" class="inline-form">
+          <button type="submit" class="link-button">Deconnexion (<%= currentUser.name %>)</button>
+        </form>
+      <% } else { %>
+        <a href="/login">Connexion</a>
+        <a href="/register" class="btn-nav">Creer un compte</a>
+      <% } %>
+    </nav>
+  </div>
+</header>

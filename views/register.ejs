@@ -1,0 +1,33 @@
+<section class="form-page">
+  <h1>Creer un compte</h1>
+  <form action="/register" method="POST" class="form">
+    <label>Nom complet
+      <input type="text" name="name" required>
+    </label>
+    <label>Email
+      <input type="email" name="email" required>
+    </label>
+    <label>Telephone (Comores ou France)
+      <input type="tel" name="phone" required placeholder="+269 ...">
+    </label>
+    <label>Ile
+      <select name="island">
+        <option value="">-- Selectionner --</option>
+        <option value="Ngazidja">Ngazidja (Grande Comore)</option>
+        <option value="Ndzuani">Ndzuani (Anjouan)</option>
+        <option value="Mwali">Mwali (Moheli)</option>
+      </select>
+    </label>
+    <label>Ville
+      <input type="text" name="city">
+    </label>
+    <label>Adresse de livraison
+      <textarea name="address" rows="2"></textarea>
+    </label>
+    <label>Mot de passe
+      <input type="password" name="password" required minlength="6">
+    </label>
+    <button type="submit" class="btn btn-primary">Creer mon compte</button>
+  </form>
+  <p class="form-footer">Deja inscrit ? <a href="/login">Se connecter</a></p>
+</section>

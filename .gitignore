@@ -1,0 +1,6 @@
+node_modules
+.env
+data/
+public/uploads/proofs/*
+!public/uploads/proofs/.gitkeep
+*.log

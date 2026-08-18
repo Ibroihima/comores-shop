@@ -1,0 +1,47 @@
+<section class="page-header">
+  <h1>Catalogue vitrine</h1>
+  <nav class="admin-nav">
+    <a href="/admin">Dashboard</a>
+    <a href="/admin/commandes">Commandes</a>
+    <a href="/admin/catalogue" class="active">Catalogue</a>
+  </nav>
+</section>
+
+<div class="card">
+  <h3>Ajouter un produit</h3>
+  <form action="/admin/catalogue" method="POST" class="form form-inline">
+    <label>Titre <input type="text" name="title" required></label>
+    <label>Image (URL) <input type="url" name="imageUrl"></label>
+    <label>Lien source <input type="url" name="sourceUrl" required></label>
+    <label>Site
+      <select name="sourceSite">
+        <option value="amazon">Amazon</option>
+        <option value="alibaba">Alibaba</option>
+        <option value="shein">Shein</option>
+        <option value="autre">Autre</option>
+      </select>
+    </label>
+    <label>Prix estime (EUR) <input type="number" step="0.01" name="estimatedPriceEur"></label>
+    <label>Categorie <input type="text" name="category"></label>
+    <button type="submit" class="btn btn-primary">Ajouter</button>
+  </form>
+</div>
+
+<table class="table">
+  <thead><tr><th>Titre</th><th>Site</th><th>Prix</th><th>Actif</th><th></th></tr></thead>
+  <tbody>
+    <% products.forEach(p => { %>
+      <tr>
+        <td><%= p.title %></td>
+        <td><span class="badge badge-<%= p.sourceSite %>"><%= p.sourceSite %></span></td>
+        <td><%= p.estimatedPriceEur %> EUR</td>
+        <td><%= p.active ? 'Oui' : 'Non' %></td>
+        <td>
+          <form action="/admin/catalogue/<%= p.id %>/toggle" method="POST" class="inline-form">
+            <button type="submit" class="link-button"><%= p.active ? 'Desactiver' : 'Activer' %></button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>

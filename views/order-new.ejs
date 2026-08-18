@@ -1,0 +1,50 @@
+<section class="form-page">
+  <h1>Nouvelle demande d'achat</h1>
+  <p>Collez le lien du produit que vous souhaitez, nous vous enverrons un devis complet (produit + transport + service) sous 24-48h.</p>
+
+  <form action="/commander" method="POST" class="form">
+    <label>Site source
+      <select name="sourceSite" required>
+        <option value="amazon" <%= prefill && prefill.sourceSite==='amazon' ? 'selected' : '' %>>Amazon</option>
+        <option value="alibaba" <%= prefill && prefill.sourceSite==='alibaba' ? 'selected' : '' %>>Alibaba</option>
+        <option value="shein" <%= prefill && prefill.sourceSite==='shein' ? 'selected' : '' %>>Shein</option>
+        <option value="autre">Autre site</option>
+      </select>
+    </label>
+    <label>Lien du produit
+      <input type="url" name="productUrl" required placeholder="https://..." value="<%= prefill ? prefill.sourceUrl : '' %>">
+    </label>
+    <label>Nom / description du produit
+      <input type="text" name="productTitle" value="<%= prefill ? prefill.title : '' %>">
+    </label>
+    <label>Variante (couleur, taille, modele...)
+      <input type="text" name="variantDetails" placeholder="Ex : Rouge, taille M">
+    </label>
+    <label>Quantite
+      <input type="number" name="quantity" min="1" value="1" required>
+    </label>
+    <label>Remarques particulieres
+      <textarea name="notes" rows="3" placeholder="Toute precision utile pour l'achat"></textarea>
+    </label>
+
+    <h3>Livraison aux Comores</h3>
+    <label>Ile
+      <select name="destinationIsland">
+        <option value="Ngazidja">Ngazidja (Grande Comore)</option>
+        <option value="Ndzuani">Ndzuani (Anjouan)</option>
+        <option value="Mwali">Mwali (Moheli)</option>
+      </select>
+    </label>
+    <label>Ville
+      <input type="text" name="destinationCity" required>
+    </label>
+    <label>Adresse precise
+      <textarea name="destinationAddress" rows="2" required></textarea>
+    </label>
+    <label>Telephone du destinataire
+      <input type="tel" name="receiverPhone" required placeholder="+269 ...">
+    </label>
+
+    <button type="submit" class="btn btn-primary">Envoyer ma demande</button>
+  </form>
+</section>

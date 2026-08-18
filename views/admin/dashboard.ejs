@@ -1,0 +1,33 @@
+<section class="page-header">
+  <h1>Tableau de bord</h1>
+  <nav class="admin-nav">
+    <a href="/admin" class="active">Dashboard</a>
+    <a href="/admin/commandes">Commandes</a>
+    <a href="/admin/catalogue">Catalogue</a>
+  </nav>
+</section>
+
+<div class="stat-grid">
+  <div class="stat-card"><span class="stat-num"><%= stats.totalOrders %></span><span>Commandes totales</span></div>
+  <div class="stat-card"><span class="stat-num"><%= stats.pending %></span><span>Nouvelles demandes</span></div>
+  <div class="stat-card"><span class="stat-num"><%= stats.toShip %></span><span>A expedier</span></div>
+  <div class="stat-card"><span class="stat-num"><%= stats.totalUsers %></span><span>Clients</span></div>
+</div>
+
+<div class="card">
+  <h3>Dernieres commandes</h3>
+  <table class="table">
+    <thead><tr><th>Reference</th><th>Client</th><th>Site</th><th>Statut</th><th></th></tr></thead>
+    <tbody>
+      <% recentOrders.forEach(o => { %>
+        <tr>
+          <td><%= o.reference %></td>
+          <td><%= o.User ? o.User.name : '-' %></td>
+          <td><span class="badge badge-<%= o.sourceSite %>"><%= o.sourceSite %></span></td>
+          <td><span class="status status-<%= o.status %>"><%= o.status.replace(/_/g, ' ') %></span></td>
+          <td><a href="/admin/commandes/<%= o.id %>">Gerer</a></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>

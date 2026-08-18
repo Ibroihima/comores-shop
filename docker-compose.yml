@@ -1,0 +1,16 @@
+services:
+  web:
+    build: .
+    container_name: comores-shop
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - db_data:/app/data
+      - uploads_data:/app/public/uploads
+    restart: unless-stopped
+
+volumes:
+  db_data:
+  uploads_data:

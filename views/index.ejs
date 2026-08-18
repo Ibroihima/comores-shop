@@ -1,0 +1,49 @@
+<section class="hero">
+  <h1>Commandez sur Amazon, Alibaba et Shein.<br>On vous livre aux Comores.</h1>
+  <p class="hero-sub">
+    Envoyez-nous le lien du produit que vous voulez. Nous l'achetons en France,
+    le receptionnons dans notre entrepot, puis l'expedions et le livrons chez vous
+    a Ngazidja, Ndzuani ou Mwali.
+  </p>
+  <div class="hero-actions">
+    <% if (currentUser) { %>
+      <a href="/commander" class="btn btn-primary">Faire une demande d'achat</a>
+    <% } else { %>
+      <a href="/register" class="btn btn-primary">Creer mon compte</a>
+    <% } %>
+    <a href="/catalogue" class="btn btn-secondary">Voir des idees de produits</a>
+  </div>
+</section>
+
+<section class="steps">
+  <div class="step">
+    <span class="step-num">1</span>
+    <h3>Vous envoyez le lien</h3>
+    <p>Collez le lien du produit Amazon, Alibaba ou Shein qui vous interesse, avec la quantite souhaitee.</p>
+  </div>
+  <div class="step">
+    <span class="step-num">2</span>
+    <h3>Nous vous envoyons un devis</h3>
+    <p>Prix du produit + transport France-Comores + frais de service, tout est detaille avant que vous ne payiez.</p>
+  </div>
+  <div class="step">
+    <span class="step-num">3</span>
+    <h3>Vous payez en toute simplicite</h3>
+    <p>MVola, HOLO, Huri Money, virement bancaire ou especes a la livraison : choisissez ce qui vous arrange.</p>
+  </div>
+  <div class="step">
+    <span class="step-num">4</span>
+    <h3>Nous achetons et livrons</h3>
+    <p>Suivez votre commande etape par etape jusqu'a la livraison chez vous aux Comores.</p>
+  </div>
+</section>
+
+<section class="trust">
+  <h2>Pourquoi passer par nous ?</h2>
+  <ul>
+    <li>Pas besoin de carte bancaire internationale ni de compte a l'etranger.</li>
+    <li>Paiement 100% comorien, dans votre devise.</li>
+    <li>Un seul interlocuteur pour tous vos achats en ligne a l'etranger.</li>
+    <li>Suivi transparent de votre commande, de l'achat a la livraison.</li>
+  </ul>
+</section>

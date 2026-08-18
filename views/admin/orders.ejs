@@ -1,0 +1,34 @@
+<section class="page-header">
+  <h1>Commandes</h1>
+  <nav class="admin-nav">
+    <a href="/admin">Dashboard</a>
+    <a href="/admin/commandes" class="active">Commandes</a>
+    <a href="/admin/catalogue">Catalogue</a>
+  </nav>
+</section>
+
+<form method="GET" class="filter-form">
+  <select name="status" onchange="this.form.submit()">
+    <option value="">-- Tous les statuts --</option>
+    <% statuses.forEach(s => { %>
+      <option value="<%= s %>" <%= statusFilter === s ? 'selected' : '' %>><%= s.replace(/_/g, ' ') %></option>
+    <% }) %>
+  </select>
+</form>
+
+<table class="table">
+  <thead><tr><th>Reference</th><th>Client</th><th>Telephone</th><th>Site</th><th>Statut</th><th>Total</th><th></th></tr></thead>
+  <tbody>
+    <% orders.forEach(o => { %>
+      <tr>
+        <td><%= o.reference %></td>
+        <td><%= o.User ? o.User.name : '-' %></td>
+        <td><%= o.User ? o.User.phone : '-' %></td>
+        <td><span class="badge badge-<%= o.sourceSite %>"><%= o.sourceSite %></span></td>
+        <td><span class="status status-<%= o.status %>"><%= o.status.replace(/_/g, ' ') %></span></td>
+        <td><%= o.totalKmf ? o.totalKmf + ' KMF' : '-' %></td>
+        <td><a href="/admin/commandes/<%= o.id %>">Gerer</a></td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>

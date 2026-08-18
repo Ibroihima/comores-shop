@@ -1,0 +1,27 @@
+<section class="page-header">
+  <h1>Idees de produits</h1>
+  <p>Ceci est une vitrine d'exemples. Pour commander, utilisez le bouton "Demander ce produit" ou collez directement votre propre lien depuis Amazon, Alibaba ou Shein sur la page "Nouvelle demande".</p>
+  <div class="filters">
+    <a href="/catalogue" class="<%= siteFilter === '' ? 'active' : '' %>">Tous</a>
+    <a href="/catalogue?site=amazon" class="<%= siteFilter === 'amazon' ? 'active' : '' %>">Amazon</a>
+    <a href="/catalogue?site=alibaba" class="<%= siteFilter === 'alibaba' ? 'active' : '' %>">Alibaba</a>
+    <a href="/catalogue?site=shein" class="<%= siteFilter === 'shein' ? 'active' : '' %>">Shein</a>
+  </div>
+</section>
+
+<section class="product-grid">
+  <% if (products.length === 0) { %>
+    <p>Aucun produit pour le moment.</p>
+  <% } %>
+  <% products.forEach(p => { %>
+    <div class="product-card">
+      <img src="<%= p.imageUrl %>" alt="<%= p.title %>" loading="lazy">
+      <div class="product-card-body">
+        <span class="badge badge-<%= p.sourceSite %>"><%= p.sourceSite %></span>
+        <h3><%= p.title %></h3>
+        <p class="price">~ <%= p.estimatedPriceEur %> EUR (produit seul)</p>
+        <a href="/commander?productId=<%= p.id %>" class="btn btn-primary btn-sm">Demander ce produit</a>
+      </div>
+    </div>
+  <% }) %>
+</section>

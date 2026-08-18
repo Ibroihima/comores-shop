@@ -1,0 +1,86 @@
+<section class="page-header">
+  <h1>Commande <%= order.reference %></h1>
+  <span class="status status-<%= order.status %>"><%= order.status.replace(/_/g, ' ') %></span>
+</section>
+
+<div class="grid-2">
+  <div class="card">
+    <h3>Produit demande</h3>
+    <p><strong><%= order.productTitle || 'Sans titre' %></strong></p>
+    <p><a href="<%= order.productUrl %>" target="_blank" rel="noopener">Voir le produit source &rarr;</a></p>
+    <p>Site : <span class="badge badge-<%= order.sourceSite %>"><%= order.sourceSite %></span></p>
+    <p>Variante : <%= order.variantDetails || '-' %></p>
+    <p>Quantite : <%= order.quantity %></p>
+    <% if (order.notes) { %><p>Remarques : <%= order.notes %></p><% } %>
+  </div>
+
+  <div class="card">
+    <h3>Devis</h3>
+    <% if (order.totalKmf) { %>
+      <p>Prix produit : ~<%= order.productPriceEur %> EUR</p>
+      <p>Transport France-Comores : <%= order.shippingPriceKmf %> KMF</p>
+      <p>Frais de service : <%= order.serviceFeeKmf %> KMF</p>
+      <p class="total">Total a payer : <strong><%= order.totalKmf %> KMF</strong></p>
+      <% if (order.adminComment) { %><p class="note"><%= order.adminComment %></p><% } %>
+    <% } else { %>
+      <p>Votre devis est en cours de preparation. Vous recevrez une notification des qu'il sera disponible.</p>
+    <% } %>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Suivi de la commande</h3>
+  <ul class="timeline">
+    <% order.StatusHistories.forEach(h => { %>
+      <li>
+        <span class="timeline-status"><%= h.status.replace(/_/g, ' ') %></span>
+        <span class="timeline-date"><%= new Date(h.createdAt).toLocaleString('fr-FR') %></span>
+        <% if (h.comment) { %><p><%= h.comment %></p><% } %>
+      </li>
+    <% }) %>
+  </ul>
+</div>
+
+<% if (order.totalKmf && ['devis_envoye', 'paiement_en_attente'].includes(order.status)) { %>
+<div class="card">
+  <h3>Payer cette commande</h3>
+  <p>Choisissez votre moyen de paiement, effectuez la transaction, puis renseignez la reference et joignez une preuve (capture d'ecran ou photo du recu).</p>
+  <form action="/commandes/<%= order.id %>/paiement" method="POST" enctype="multipart/form-data" class="form">
+    <label>Moyen de paiement
+      <select name="method" required>
+        <option value="mvola">MVola</option>
+        <option value="holo">HOLO</option>
+        <option value="huri_money">Huri Money</option>
+        <option value="virement_bancaire">Virement bancaire</option>
+        <option value="especes_livraison">Especes a la livraison</option>
+      </select>
+    </label>
+    <label>Reference / numero de transaction
+      <input type="text" name="referenceCode" placeholder="Ex : MV123456789">
+    </label>
+    <label>Preuve de paiement (photo / capture)
+      <input type="file" name="proof" accept="image/*,.pdf">
+    </label>
+    <button type="submit" class="btn btn-primary">Envoyer mon paiement</button>
+  </form>
+</div>
+<% } %>
+
+<% if (order.Payments && order.Payments.length > 0) { %>
+<div class="card">
+  <h3>Paiements soumis</h3>
+  <table class="table">
+    <thead><tr><th>Methode</th><th>Reference</th><th>Statut</th><th>Date</th></tr></thead>
+    <tbody>
+      <% order.Payments.forEach(p => { %>
+        <tr>
+          <td><%= p.method %></td>
+          <td><%= p.referenceCode || '-' %></td>
+          <td><span class="status status-<%= p.status %>"><%= p.status %></span></td>
+          <td><%= new Date(p.createdAt).toLocaleDateString('fr-FR') %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<% } %>

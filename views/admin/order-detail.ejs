@@ -1,0 +1,96 @@
+<section class="page-header">
+  <h1>Commande <%= order.reference %></h1>
+  <span class="status status-<%= order.status %>"><%= order.status.replace(/_/g, ' ') %></span>
+</section>
+
+<div class="grid-2">
+  <div class="card">
+    <h3>Client</h3>
+    <p><strong><%= order.User.name %></strong></p>
+    <p>Tel : <%= order.User.phone %></p>
+    <p>Email : <%= order.User.email %></p>
+    <p>Livraison : <%= order.destinationAddress %>, <%= order.destinationCity %> (<%= order.destinationIsland %>)</p>
+    <p>Tel destinataire : <%= order.receiverPhone %></p>
+  </div>
+
+  <div class="card">
+    <h3>Produit</h3>
+    <p><strong><%= order.productTitle || 'Sans titre' %></strong></p>
+    <p><a href="<%= order.productUrl %>" target="_blank" rel="noopener">Lien source &rarr;</a></p>
+    <p>Site : <span class="badge badge-<%= order.sourceSite %>"><%= order.sourceSite %></span></p>
+    <p>Variante : <%= order.variantDetails || '-' %> | Quantite : <%= order.quantity %></p>
+    <% if (order.notes) { %><p>Remarques client : <%= order.notes %></p><% } %>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Devis</h3>
+  <form action="/admin/commandes/<%= order.id %>/devis" method="POST" class="form form-inline">
+    <label>Prix produit (EUR)
+      <input type="number" step="0.01" name="productPriceEur" value="<%= order.productPriceEur || '' %>">
+    </label>
+    <label>Poids estime (kg)
+      <input type="number" step="0.1" name="estimatedWeightKg" value="<%= order.estimatedWeightKg || '' %>">
+    </label>
+    <label>Transport (KMF)
+      <input type="number" step="1" name="shippingPriceKmf" value="<%= order.shippingPriceKmf || '' %>">
+    </label>
+    <label>Frais de service (KMF)
+      <input type="number" step="1" name="serviceFeeKmf" value="<%= order.serviceFeeKmf || '' %>">
+    </label>
+    <label class="full-width">Commentaire pour le client
+      <textarea name="adminComment" rows="2"><%= order.adminComment || '' %></textarea>
+    </label>
+    <button type="submit" class="btn btn-primary">Envoyer / mettre a jour le devis</button>
+  </form>
+  <% if (order.totalKmf) { %>
+    <p class="total">Total actuel : <strong><%= order.totalKmf %> KMF</strong></p>
+  <% } %>
+</div>
+
+<div class="card">
+  <h3>Paiements soumis</h3>
+  <% if (!order.Payments || order.Payments.length === 0) { %>
+    <p>Aucun paiement soumis pour le moment.</p>
+  <% } %>
+  <% order.Payments && order.Payments.forEach(p => { %>
+    <div class="payment-row">
+      <p><strong><%= p.method %></strong> — Ref : <%= p.referenceCode || '-' %> — <%= p.amountKmf %> KMF</p>
+      <% if (p.proofFilePath) { %><p><a href="<%= p.proofFilePath %>" target="_blank">Voir la preuve</a></p><% } %>
+      <p>Statut : <span class="status status-<%= p.status %>"><%= p.status %></span></p>
+      <% if (p.status === 'en_attente') { %>
+        <form action="/admin/paiements/<%= p.id %>/verifier" method="POST" class="form-inline">
+          <input type="text" name="adminNote" placeholder="Note (optionnel)">
+          <button type="submit" name="decision" value="confirme" class="btn btn-primary btn-sm">Confirmer</button>
+          <button type="submit" name="decision" value="rejete" class="btn btn-danger btn-sm">Rejeter</button>
+        </form>
+      <% } %>
+    </div>
+  <% }) %>
+</div>
+
+<div class="card">
+  <h3>Changer le statut</h3>
+  <form action="/admin/commandes/<%= order.id %>/statut" method="POST" class="form-inline">
+    <select name="status" required>
+      <% statuses.forEach(s => { %>
+        <option value="<%= s %>" <%= order.status === s ? 'selected' : '' %>><%= s.replace(/_/g, ' ') %></option>
+      <% }) %>
+    </select>
+    <input type="text" name="comment" placeholder="Commentaire visible par le client (ex : numero de suivi)">
+    <button type="submit" class="btn btn-primary">Mettre a jour</button>
+  </form>
+</div>
+
+<div class="card">
+  <h3>Historique</h3>
+  <ul class="timeline">
+    <% order.StatusHistories.forEach(h => { %>
+      <li>
+        <span class="timeline-status"><%= h.status.replace(/_/g, ' ') %></span>
+        <span class="timeline-date"><%= new Date(h.createdAt).toLocaleString('fr-FR') %></span>
+        <% if (h.comment) { %><p><%= h.comment %></p><% } %>
+      </li>
+    <% }) %>
+  </ul>
+</div>

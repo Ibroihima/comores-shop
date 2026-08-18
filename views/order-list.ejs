@@ -1,0 +1,26 @@
+<section class="page-header">
+  <h1>Mes commandes</h1>
+  <a href="/commander" class="btn btn-primary btn-sm">+ Nouvelle demande</a>
+</section>
+
+<% if (orders.length === 0) { %>
+  <p>Vous n'avez pas encore de commande. <a href="/commander">Faire une premiere demande</a>.</p>
+<% } %>
+
+<table class="table">
+  <thead>
+    <tr><th>Reference</th><th>Produit</th><th>Site</th><th>Statut</th><th>Total</th><th></th></tr>
+  </thead>
+  <tbody>
+    <% orders.forEach(o => { %>
+      <tr>
+        <td><%= o.reference %></td>
+        <td><%= o.productTitle || o.productUrl.slice(0, 40) + '...' %></td>
+        <td><span class="badge badge-<%= o.sourceSite %>"><%= o.sourceSite %></span></td>
+        <td><span class="status status-<%= o.status %>"><%= o.status.replace(/_/g, ' ') %></span></td>
+        <td><%= o.totalKmf ? o.totalKmf + ' KMF' : 'En attente de devis' %></td>
+        <td><a href="/commandes/<%= o.id %>">Voir</a></td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
