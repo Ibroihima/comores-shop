@@ -1,0 +1,7 @@
+app_repo: https://github.com/Ibroihima/comores-shop.git
+app_version: main
+app_dir: /opt/comores-shop
+currency: KMF
+service_fee_percent: 15
+shipping_price_per_kg: 3500
+admin_name: Administrateur

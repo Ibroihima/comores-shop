@@ -1,0 +1,5 @@
+node_env: development
+app_name: comores-dev
+session_secret: dev-secret-changeme
+admin_email: admin-dev@example.com
+admin_password: DevPass123!

@@ -1,0 +1,5 @@
+node_env: production
+app_name: comores-prod
+session_secret: prod-secret-CHANGE-MOI
+admin_email: admin@example.com
+admin_password: ProdPass123!

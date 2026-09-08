@@ -1,0 +1,6 @@
+---
+- name: Deployer l'application Comores Shop
+  hosts: all
+  become: true
+  roles:
+    - nodeapp

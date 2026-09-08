@@ -1,0 +1,5 @@
+node_env: production
+app_name: comores-preprod
+session_secret: preprod-secret-changeme
+admin_email: admin-preprod@example.com
+admin_password: PreprodPass123!
