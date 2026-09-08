@@ -2,29 +2,34 @@
 - name: Installer les dependances systeme
   apt:
     name:
-     - curl
-     - git
-     - build-essential
+      - curl
+      - git
+      - build-essential
     state: present
     update_cache: true
+
 - name: Ajouter le depot NodeSource (Node.js 20)
   shell: curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
   args:
     creates: /etc/apt/sources.list.d/nodesource.list
+
 - name: Installer Node.js et npm
   apt:
     name: nodejs
     state: present
     update_cache: true
+
 - name: Installer PM2 globalement
   npm:
     name: pm2
     global: true
+
 - name: Creer le repertoire de l'application
   file:
-     path: "{{ app_dir }}"
-     state: directory
-     mode: '0755'
+    path: "{{ app_dir }}"
+    state: directory
+    mode: '0755'
+
 - name: Cloner ou mettre a jour le depot du projet
   git:
     repo: "{{ app_repo }}"
@@ -32,31 +37,36 @@
     version: "{{ app_version }}"
     force: true
   register: git_result
+
 - name: Generer le fichier .env pour cet environnement
   template:
     src: env.j2
     dest: "{{ app_dir }}/.env"
     mode: '0600'
+
 - name: Installer les dependances Node.js
   command: npm install --omit=dev
   args:
-     chdir: "{{ app_dir }}"
+    chdir: "{{ app_dir }}"
+
 - name: Executer le script de seed (idempotent)
   command: node config/seed.js
   args:
-     chdir: "{{ app_dir }}"
+    chdir: "{{ app_dir }}"
   changed_when: false
+
 - name: Demarrer ou recharger l'application avec PM2
   shell: |
-  pm2 describe {{ app_name }} > /dev/null 2>&1
-  if [ $? -ne 0 ]; then
-    pm2 start server.js --name {{ app_name }}
-  else
-    pm2 reload {{ app_name }}
-  fi
+    pm2 describe {{ app_name }} > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+      pm2 start server.js --name {{ app_name }}
+    else
+      pm2 reload {{ app_name }}
+    fi
   args:
     chdir: "{{ app_dir }}"
   changed_when: true
+
 - name: Sauvegarder la liste des process PM2
   command: pm2 save
   changed_when: false
